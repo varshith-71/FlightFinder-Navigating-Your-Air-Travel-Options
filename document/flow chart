@@ -1,0 +1,44 @@
++---------------------------+
+|   Start Program           |
++---------------------------+
+            |
+            v
++---------------------------+
+| Prompt user for:          |
+| - Departure City          |
+| - Destination City        |
++---------------------------+
+            |
+            v
++---------------------------+
+| Validate city names:      |
+| Are both cities in graph? |
++---------------------------+
+       |             |
+     [No]           [Yes]
+       |             |
+       v             v
++----------------+   +---------------------------------+
+| Show error msg |   | Use Dijkstra's Algorithm to     |
+| and stop       |   | find shortest path and distance |
++----------------+   +---------------------------------+
+                                |
+                                v
+              +-------------------------------+
+              | Was a route found between     |
+              | source and destination?       |
+              +-------------------------------+
+                     |             |
+                   [No]          [Yes]
+                     |             |
+                     v             v
+       +--------------------+  +--------------------------+
+       | Show: "No route"   |  | Display route and        |
+       | available message  |  | total distance           |
+       +--------------------+  +--------------------------+
+                     \             /
+                      \           /
+                       v         v
+               +------------------------+
+               |        End Program     |
+               +------------------------+
