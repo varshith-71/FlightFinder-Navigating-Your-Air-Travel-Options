@@ -1,0 +1,41 @@
+// frontend/src/App.js
+
+import React, { useState } from 'react';
+import axios from 'axios';
+
+function App() {
+  const [source, setSource] = useState('');
+  const [destination, setDestination] = useState('');
+  const [result, setResult] = useState(null);
+
+  const findRoute = async () => {
+    try {
+      const response = await axios.post('http://localhost:5000/find-route', {
+        source,
+        destination
+      });
+      setResult(response.data);
+    } catch (err) {
+      setResult({ error: err.response?.data?.error || 'Server error' });
+    }
+  };
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h2>✈️ Flight Finder Navigation System</h2>
+      <input placeholder="Source" value={source} onChange={e => setSource(e.target.value)} />
+      <input placeholder="Destination" value={destination} onChange={e => setDestination(e.target.value)} />
+      <button onClick={findRoute}>Find Route</button>
+
+      {result && (
+        result.error ? <p style={{ color: 'red' }}>{result.error}</p> :
+        <div>
+          <p><strong>Route:</strong> {result.route.join(' ➝ ')}</p>
+          <p><strong>Total Distance:</strong> {result.distance} miles</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
