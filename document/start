@@ -1,1 +1,8 @@
+| Layer         | Technology                      | Purpose                                       |
+| ------------- | ------------------------------- | --------------------------------------------- |
+| **Frontend**  | HTML, CSS, JavaScript (React)   | User interface for input and displaying route |
+| **Backend**   | Python (Flask / Django)         | API server to process route-finding logic     |
+| **Database**  | PostgreSQL / SQLite             | Store flight data (cities, distances)         |
+| **Algorithm** | Dijkstra (in Python)            | Find shortest flight path between cities      |
+| **Optional**  | Map API (Leaflet / Google Maps) | Visualize routes on a map                     |
 
