@@ -1,1 +1,57 @@
+import heapq
+
+# Sample flight network (graph structure)
+flight_graph = {
+    'New York': {'London': 3450, 'Paris': 3635, 'Dubai': 6830},
+    'London': {'New York': 3450, 'Dubai': 3400, 'Mumbai': 4500},
+    'Paris': {'New York': 3635, 'Tokyo': 6050},
+    'Dubai': {'London': 3400, 'Sydney': 7480, 'Mumbai': 1210},
+    'Mumbai': {'Dubai': 1210, 'Tokyo': 4260},
+    'Tokyo': {'Paris': 6050, 'Sydney': 4860},
+    'Sydney': {'Tokyo': 4860}
+}
+
+def dijkstra(graph, start, end):
+    queue = [(0, start, [])]
+    visited = set()
+
+    while queue:
+        (cost, city, path) = heapq.heappop(queue)
+
+        if city in visited:
+            continue
+
+        path = path + [city]
+        visited.add(city)
+
+        if city == end:
+            return cost, path
+
+        for adjacent, distance in graph.get(city, {}).items():
+            if adjacent not in visited:
+                heapq.heappush(queue, (cost + distance, adjacent, path))
+
+    return float("inf"), []
+
+def flight_finder():
+    print("✈️ Flight Finder Navigation System ✈️\n")
+    source = input("Enter departure city: ").strip()
+    destination = input("Enter destination city: ").strip()
+
+    if source not in flight_graph or destination not in flight_graph:
+        print("❌ Invalid city name(s). Please try again.")
+        return
+
+    distance, route = dijkstra(flight_graph, source, destination)
+
+    if route:
+        print(f"\n✅ Route found from {source} to {destination}:")
+        print(" ➝ ".join(route))
+        print(f"Total Distance: {distance} miles")
+    else:
+        print("⚠️ No available route found.")
+
+# Run the flight finder
+if __name__ == "__main__":
+    flight_finder()
 
