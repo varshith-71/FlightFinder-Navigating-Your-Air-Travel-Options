@@ -1,0 +1,51 @@
+# backend/app.py
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import heapq
+
+app = Flask(__name__)
+CORS(app)  # enable cross-origin for frontend
+
+# Flight graph (can be replaced by database query)
+flight_graph = {
+    'New York': {'London': 3450, 'Paris': 3635},
+    'London': {'Dubai': 3400, 'Mumbai': 4500},
+    'Paris': {'Tokyo': 6050},
+    'Dubai': {'Sydney': 7480, 'Mumbai': 1210},
+    'Mumbai': {'Tokyo': 4260},
+    'Tokyo': {'Sydney': 4860},
+    'Sydney': {}
+}
+
+def dijkstra(graph, start, end):
+    queue = [(0, start, [])]
+    visited = set()
+
+    while queue:
+        (cost, city, path) = heapq.heappop(queue)
+        if city in visited:
+            continue
+        path = path + [city]
+        visited.add(city)
+        if city == end:
+            return cost, path
+        for adjacent, distance in graph.get(city, {}).items():
+            if adjacent not in visited:
+                heapq.heappush(queue, (cost + distance, adjacent, path))
+    return float('inf'), []
+
+@app.route('/find-route', methods=['POST'])
+def find_route():
+    data = request.json
+    source = data['source']
+    destination = data['destination']
+
+    if source not in flight_graph or destination not in flight_graph:
+        return jsonify({'error': 'Invalid source or destination'}), 400
+
+    distance, route = dijkstra(flight_graph, source, destination)
+    return jsonify({'distance': distance, 'route': route})
+
+if __name__ == '__main__':
+    app.run(debug=True)
