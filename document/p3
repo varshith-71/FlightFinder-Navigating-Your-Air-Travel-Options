@@ -1,0 +1,13 @@
+# Example: fetching from DB
+flights = db.session.query(Flight).all()
+graph = {}
+for flight in flights:
+    graph.setdefault(flight.source, {})[flight.destination] = flight.distance
+flight-finder/
+├── backend/
+│   ├── app.py
+│   └── (optional) models.py
+├── frontend/
+│   ├── src/
+│   │   └── App.js
+│   └── package.json
